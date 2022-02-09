@@ -1,19 +1,19 @@
 import mongoose from 'mongoose';
-import isEmail from 'validator/lib/isEmail';
+import isEmail from 'validator/lib/isEmail.js';
 
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Please provide name'],
-    min: 3,
-    max: 20,
+    minlength: 3,
+    maxlength: 20,
     trim: true,
   },
 
   lastName: {
     type: String,
-    min: 3,
-    max: 20,
+    minlength: 3,
+    maxlength: 20,
     trim: true,
     default: 'last name',
   },
@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please provide password'],
-    min: 6,
+    minlength: 6,
   },
 
   location: {
