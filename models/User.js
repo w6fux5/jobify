@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import isEmail from 'validator/lib/isEmail';
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -21,6 +22,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide email'],
     unique: true,
+    validate: {
+      validator: isEmail,
+      message: 'Invalid email',
+    },
   },
 
   password: {
