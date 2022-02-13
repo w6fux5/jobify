@@ -9,7 +9,7 @@ import Logo from '../../components/Logo';
 const NavBar = () => {
   const [showLogout, setShowLogout] = useState(false);
 
-  const { toggleSideBar, logoutUser } = useAppContext();
+  const { toggleSideBar, logoutUser, user } = useAppContext();
   return (
     <Wrapper>
       <div className="nav-center">
@@ -33,7 +33,7 @@ const NavBar = () => {
             onClick={() => setShowLogout(!showLogout)}
           >
             <FaUserCircle />
-            <span>Mike</span>
+            <span>{user?.name}</span>
             <FaCaretDown />
           </button>
 
