@@ -1,7 +1,11 @@
 import User from '../models/User.js';
 import { StatusCodes } from 'http-status-codes';
 
-import { BadRequestError, UnauthenticatedError } from '../errors/index.js';
+import {
+  BadRequestError,
+  UnauthenticatedError,
+  NotFoundError,
+} from '../errors/index.js';
 
 // @desc    create a new user & get token
 // @route   POST   /api/auth/register
@@ -48,7 +52,7 @@ export const login = async (req, res) => {
   const existsUser = await User.findOne({ email });
   const passwordIsMatch = await existsUser?.matchPassword(password);
 
-  if (!existsUser || !passwordIsMatch) {
+  if (!passwordIsMatch || !existsUser) {
     throw new UnauthenticatedError('Invalid Credentials');
   }
 
@@ -61,7 +65,30 @@ export const login = async (req, res) => {
   });
 };
 
-export const updateUser = (req, res) => {
-  console.log(req.user);
-  res.send('updateUser');
+export const updateUser = async (req, res) => {
+  const { email, name, lastName, location, userID } = req.body;
+
+  if (!email || !name || !lastName || !location) {
+    throw new BadRequestError('Please provide all values');
+  }
+
+  const user = await User.findById(userID);
+
+  if (!user) {
+    throw new NotFoundError('Invalid user id');
+  }
+
+  user.email = email;
+  user.name = name;
+  user.lastName = lastName;
+  user.location = location;
+
+  const updateUser = await user.save();
+  const token = user.createJWT();
+
+  res.status(StatusCodes.OK).json({
+    token,
+    user: updateUser,
+    location: updateUser.location,
+  });
 };
