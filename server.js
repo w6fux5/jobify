@@ -11,6 +11,7 @@ import connectDB from './db/connectDB.js';
 // Middleware
 import notFoundMiddleware from './middleware/not-found.js';
 import errorHandleMiddleware from './middleware/error-handler.js';
+import authenticateUser from './middleware/authenticate-user.js';
 
 // Routes
 import authRouter from './routes/authRoutes.js';
@@ -27,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/jobs', authenticateUser, jobRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandleMiddleware);

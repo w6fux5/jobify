@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Please provide email'],
-    unique: true,
+    unique: [true, 'Invalid Email'],
     validate: {
       validator: isEmail,
       message: 'Invalid email',
@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please provide password'],
-    minlength: 6,
+    minlength: [6, 'Invalid Password'],
   },
 
   location: {

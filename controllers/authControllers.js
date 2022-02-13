@@ -62,5 +62,6 @@ export const login = async (req, res) => {
 };
 
 export const updateUser = (req, res) => {
+  console.log(req.user);
   res.send('updateUser');
 };
