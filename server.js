@@ -6,7 +6,7 @@ import 'colors';
 import 'express-async-errors';
 
 // DB
-import connectDB from './db/connect.js';
+import connectDB from './db/connectDB.js';
 
 // Middleware
 import notFoundMiddleware from './middleware/not-found.js';
@@ -25,10 +25,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use(cors());
 app.use(express.json());
-
-app.get('/', (req, res) => {
-  res.send('hi');
-});
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', jobRouter);

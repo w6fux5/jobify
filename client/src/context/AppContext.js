@@ -19,6 +19,8 @@ export const initialState = {
   token: token || '',
   userLocation: userLocation || '',
   jobLocation: userLocation || '',
+
+  showSideBar: false,
 };
 
 export const AppContext = React.createContext();
@@ -47,6 +49,15 @@ export const AppProvider = ({ children }) => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('location');
+  };
+
+  const logoutUser = () => {
+    removeUserFromLocalStorage();
+    dispatch({ type: actionTypes.LOGOUT_USER });
+  };
+
+  const toggleSideBar = () => {
+    dispatch({ type: actionTypes.TOGGLE_SIDEBAR });
   };
 
   // @desc    1.Create a new user, 2.User Login 3.set user data to localStorage
@@ -85,6 +96,8 @@ export const AppProvider = ({ children }) => {
         ...state,
         displayAlert,
         setupUser,
+        toggleSideBar,
+        logoutUser,
       }}
     >
       {children}

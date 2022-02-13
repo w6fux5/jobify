@@ -1,7 +1,6 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import main from '../assets/images/main.svg';
-
 import Wrapper from '../assets/wrappers/LandingPage';
 import { Logo } from '../components';
 
@@ -23,7 +22,9 @@ const LandingPage = () => {
             of them lyft tacos readymade microdosing food truck. Kombucha umami
             retro, slow-carb freegan cred lo-fi keffiyeh prism aesthetic
           </p>
-          <button className="btn btn-hero">Login/Register</button>
+          <Link to="/register" className="btn btn-hero">
+            Login/Register
+          </Link>
         </div>
         <img src={main} alt="main" className="img main-img" />
       </div>

@@ -1,4 +1,5 @@
 import actionTypes from './actions';
+import { initialState } from './AppContext';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -19,7 +20,7 @@ const reducer = (state, action) => {
         alertText: '',
       };
 
-    // Register and Login
+    // User
     case actionTypes.SETUP_USER_BEGIN:
       return {
         ...state,
@@ -46,6 +47,22 @@ const reducer = (state, action) => {
         showAlert: true,
         alertType: 'danger',
         alertText: action.payload,
+      };
+
+    case actionTypes.LOGOUT_USER:
+      return {
+        ...initialState,
+        user: null,
+        token: '',
+        userLocation: '',
+        jobLocation: '',
+      };
+
+    // Toggle SIdebar
+    case actionTypes.TOGGLE_SIDEBAR:
+      return {
+        ...state,
+        showSideBar: !state.showSideBar,
       };
 
     default:
