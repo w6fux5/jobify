@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.method('toJSON', function () {
-  const { __v, password, ...object } = this.toObject();
+  const { __v, password, location, ...object } = this.toObject();
   return object;
 });
 
@@ -57,6 +57,11 @@ UserSchema.methods.createJWT = function () {
   return jwt.sign({ userID: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIVE_TIME,
   });
+};
+
+UserSchema.methods.matchPassword = async function (candidatePassword) {
+  const isMatch = await bcrypt.compare(candidatePassword, this.password);
+  return isMatch;
 };
 
 const User = mongoose.model('User', UserSchema);

@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import morgan from 'morgan';
 import 'colors';
 import 'express-async-errors';
 
@@ -18,12 +19,16 @@ import jobRouter from './routes/jobRoutes.js';
 dotenv.config();
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('hi');
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 
 app.use(cors());
 app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('hi');
+});
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', jobRouter);

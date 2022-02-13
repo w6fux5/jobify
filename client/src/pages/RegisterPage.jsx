@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Logo, FormRow, Alert } from '../components';
 import Wrapper from '../assets/wrappers/RegisterPage';
 import { useAppContext } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -11,8 +12,20 @@ const initialState = {
 };
 
 const RegisterPage = () => {
-  const { isLoading, showAlert, displayAlert } = useAppContext();
+  // Router
+  const navigate = useNavigate();
+
+  // Context
+  const { user, isLoading, showAlert, displayAlert, setupUser } =
+    useAppContext();
+
+  /// Init State
   const [formData, setFormData] = useState(initialState);
+
+  useEffect(() => {
+    if (!user) return;
+    navigate('/');
+  }, [user, navigate]);
 
   const onChange = ({ target }) => {
     const { name, value } = target || {};
@@ -30,13 +43,29 @@ const RegisterPage = () => {
       displayAlert();
       return;
     }
-    console.log(formData);
-    setFormData(initialState);
+
+    const currentUser = { name, email, password };
+
+    if (isMember) {
+      setupUser({
+        currentUser,
+        endPoint: 'login',
+        alert: '正在登入...',
+      });
+      return;
+    }
+
+    setupUser({
+      currentUser,
+      endPoint: 'register',
+      alert: 'User created! Redirecting...',
+    });
   };
 
   const onToggleIsMember = () => {
     setFormData((prev) => ({ ...prev, isMember: !prev.isMember }));
   };
+
   return (
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>
@@ -70,7 +99,7 @@ const RegisterPage = () => {
           value={formData.password}
         />
 
-        <button type="submit" className="btn btn-block">
+        <button type="submit" className="btn btn-block" disabled={isLoading}>
           Submit
         </button>
 
