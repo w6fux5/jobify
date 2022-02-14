@@ -28,6 +28,33 @@ export const AppContext = React.createContext();
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const authFetch = axios.create({
+    baseURL: '/api/v1',
+  });
+
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers.common['Authorization'] = `Bearer ${state.token}`;
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      // console.log(error.response);
+      if (error.response.status === 401) {
+        logoutUser();
+      }
+      return Promise.reject(error);
+    }
+  );
+
   const displayAlert = () => {
     dispatch({ type: actionTypes.DISPLAY_ALERT });
     clearAlert();
@@ -90,6 +117,30 @@ export const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const updateUser = async (userData) => {
+    dispatch({ type: actionTypes.UPDATE_USER_BEGIN });
+
+    try {
+      const { data } = await authFetch.patch('/auth/updateUser', userData);
+      const { user, token, location } = data;
+
+      dispatch({
+        type: actionTypes.UPDATE_USER_SUCCESS,
+        payload: { user, token, location },
+      });
+
+      addUserToLocalStorage({ user, token, location });
+    } catch (error) {
+      if (error.response.status !== 401) {
+        dispatch({
+          type: actionTypes.UPDATE_USER_ERROR,
+          payload: error.response.data.message,
+        });
+      }
+    }
+    clearAlert();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -98,6 +149,7 @@ export const AppProvider = ({ children }) => {
         setupUser,
         toggleSideBar,
         logoutUser,
+        updateUser,
       }}
     >
       {children}

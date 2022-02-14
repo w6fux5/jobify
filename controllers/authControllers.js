@@ -66,13 +66,17 @@ export const login = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  const { email, name, lastName, location, userID } = req.body;
+  const { email, name, lastName, location } = req.body;
 
   if (!email || !name || !lastName || !location) {
     throw new BadRequestError('Please provide all values');
   }
 
+  const { userID } = req.user;
+
   const user = await User.findById(userID);
+
+  console.log(userID);
 
   if (!user) {
     throw new NotFoundError('Invalid user id');

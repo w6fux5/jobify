@@ -20,7 +20,7 @@ const reducer = (state, action) => {
         alertText: '',
       };
 
-    // User
+    // User Setup
     case actionTypes.SETUP_USER_BEGIN:
       return {
         ...state,
@@ -32,8 +32,8 @@ const reducer = (state, action) => {
         ...state,
         isLoading: false,
         token: action.payload.token,
-        userLocation: action.payload.userLocation,
-        jobLocation: action.payload.userLocation,
+        userLocation: action.payload.location,
+        jobLocation: action.payload.location,
         user: action.payload.user,
         showAlert: true,
         alertType: 'success',
@@ -41,6 +41,35 @@ const reducer = (state, action) => {
       };
 
     case actionTypes.SETUP_USER_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: 'danger',
+        alertText: action.payload,
+      };
+
+    // Update User
+    case actionTypes.UPDATE_USER_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case actionTypes.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        token: action.payload.token,
+        userLocation: action.payload.location,
+        jobLocation: action.payload.location,
+        user: action.payload.user,
+        showAlert: true,
+        alertType: 'success',
+        alertText: 'User Profile Update!',
+      };
+
+    case actionTypes.UPDATE_USER_ERROR:
       return {
         ...state,
         isLoading: false,
