@@ -3,45 +3,48 @@ import isEmail from 'validator/lib/isEmail.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Please provide name'],
-    minlength: 3,
-    maxlength: 20,
-    trim: true,
-  },
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Please provide name'],
+      minlength: 3,
+      maxlength: 20,
+      trim: true,
+    },
 
-  lastName: {
-    type: String,
-    minlength: 3,
-    maxlength: 20,
-    trim: true,
-    default: 'last name',
-  },
+    lastName: {
+      type: String,
+      minlength: 3,
+      maxlength: 20,
+      trim: true,
+      default: 'last name',
+    },
 
-  email: {
-    type: String,
-    required: [true, 'Please provide email'],
-    unique: [true, 'Invalid Email'],
-    validate: {
-      validator: isEmail,
-      message: 'Invalid email',
+    email: {
+      type: String,
+      required: [true, 'Please provide email'],
+      unique: [true, 'Invalid Email'],
+      validate: {
+        validator: isEmail,
+        message: 'Invalid email',
+      },
+    },
+
+    password: {
+      type: String,
+      required: [true, 'Please provide password'],
+      minlength: [6, 'Invalid Password'],
+    },
+
+    location: {
+      type: String,
+      default: 'my city',
+      trim: true,
     },
   },
-
-  password: {
-    type: String,
-    required: [true, 'Please provide password'],
-    minlength: [6, 'Invalid Password'],
-  },
-
-  location: {
-    type: String,
-    default: 'my city',
-    trim: true,
-  },
-});
+  { timestamps: true }
+);
 
 UserSchema.method('toJSON', function () {
   const { __v, password, location, ...object } = this.toObject();

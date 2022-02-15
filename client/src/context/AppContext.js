@@ -15,12 +15,24 @@ export const initialState = {
   showAlert: false,
   alertText: '',
   alertType: '',
+
+  showSideBar: false,
+
+  // User
   user: JSON.parse(user) || null,
   token: token || '',
   userLocation: userLocation || '',
-  jobLocation: userLocation || '',
 
-  showSideBar: false,
+  // Job
+  isEditing: false,
+  editJobId: '',
+  position: '',
+  company: '',
+  jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
+  jobType: 'full-time',
+  jobLocation: userLocation || '',
+  statusOptions: ['interview', 'declined', 'pending'],
+  status: 'pending',
 };
 
 export const AppContext = React.createContext();
@@ -141,6 +153,17 @@ export const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const handleChange = ({ name, value }) => {
+    dispatch({
+      type: actionTypes.HANDLE_CHANGE,
+      payload: { name, value },
+    });
+  };
+
+  const clearValues = () => {
+    dispatch({ type: actionTypes.CLEAR_VALUES });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -150,6 +173,8 @@ export const AppProvider = ({ children }) => {
         toggleSideBar,
         logoutUser,
         updateUser,
+        handleChange,
+        clearValues,
       }}
     >
       {children}

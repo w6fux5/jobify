@@ -53,7 +53,7 @@ export const login = async (req, res) => {
   const passwordIsMatch = await existsUser?.matchPassword(password);
 
   if (!passwordIsMatch || !existsUser) {
-    throw new UnauthenticatedError('Invalid Credentials');
+    throw new UnauthenticatedError('Invalid Credentials!');
   }
 
   const token = existsUser.createJWT();

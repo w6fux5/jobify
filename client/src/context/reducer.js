@@ -94,6 +94,29 @@ const reducer = (state, action) => {
         showSideBar: !state.showSideBar,
       };
 
+    // Handle Change
+    case actionTypes.HANDLE_CHANGE:
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value,
+      };
+
+    // Clear values
+    case actionTypes.CLEAR_VALUES:
+      const initState = {
+        isEditing: false,
+        editJobId: '',
+        position: '',
+        company: '',
+        jobLocation: state.userLocation,
+        jobType: 'full-time',
+        status: 'pending',
+      };
+      return {
+        ...state,
+        ...initState,
+      };
+
     default:
       throw new Error(`No such action: ${action.type}`);
   }

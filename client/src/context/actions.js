@@ -15,6 +15,10 @@ const actionTypes = {
 
   LOGOUT_USER: 'LOGOUT_USER',
 
+  // Set Job
+  HANDLE_CHANGE: 'HANDLE_CHANGE',
+  CLEAR_VALUES: 'CLEAR_VALUES',
+
   // SideBar
   TOGGLE_SIDEBAR: 'TOGGLE_SIDEBAR',
 };
