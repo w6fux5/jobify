@@ -25,6 +25,9 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: true,
+        showAlert: false,
+        alertText: '',
+        alertType: '',
       };
 
     case actionTypes.SETUP_USER_SUCCESS:
@@ -54,6 +57,9 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: true,
+        showAlert: false,
+        alertText: '',
+        alertType: '',
       };
 
     case actionTypes.UPDATE_USER_SUCCESS:
@@ -94,14 +100,14 @@ const reducer = (state, action) => {
         showSideBar: !state.showSideBar,
       };
 
-    // Handle Change
+    // Job Form Handle Change
     case actionTypes.HANDLE_CHANGE:
       return {
         ...state,
         [action.payload.name]: action.payload.value,
       };
 
-    // Clear values
+    // Job Form Clear values
     case actionTypes.CLEAR_VALUES:
       const initState = {
         isEditing: false,
@@ -115,6 +121,53 @@ const reducer = (state, action) => {
       return {
         ...state,
         ...initState,
+      };
+
+    // Create Job
+    case actionTypes.CREATE_JOB_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+        showAlert: false,
+        alertText: '',
+        alertType: '',
+      };
+
+    case actionTypes.CREATE_JOB_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: 'success',
+        alertText: 'New Job Created!',
+      };
+
+    case actionTypes.CREATE_JOB_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: 'danger',
+        alertText: action.payload,
+      };
+
+    case actionTypes.GET_JOBS_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+        showAlert: false,
+        alertType: '',
+        alertText: '',
+      };
+
+    case actionTypes.GET_JOBS_SUCCESS:
+      const { numOfPages, totalJobs, jobs } = action.payload;
+      return {
+        ...state,
+        isLoading: false,
+        numOfPages,
+        totalJobs,
+        jobs,
       };
 
     default:

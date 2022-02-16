@@ -10,15 +10,19 @@ export const createJob = async (req, res) => {
 
   req.body.createdBy = req.user.userID;
 
-  console.log(req.body);
-
   const job = await Job.create(req.body);
 
   res.status(StatusCodes.CREATED).json({ job });
 };
 
-export const getAllJobs = (req, res) => {
-  res.send('get all jobs');
+export const getAllJobs = async (req, res) => {
+  console.log(req.user);
+  const jobs = await Job.find({ createdBy: req.user.userID });
+  res.status(StatusCodes.OK).json({
+    numOfPages: 1,
+    totalJobs: jobs.length,
+    jobs,
+  });
 };
 
 export const updateJob = (req, res) => {

@@ -22,7 +22,6 @@
   "homepage": "https://github.com/w6fux5/jobify#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "classnames": "^2.3.1",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",

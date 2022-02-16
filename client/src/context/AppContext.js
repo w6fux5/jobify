@@ -23,7 +23,7 @@ export const initialState = {
   token: token || '',
   userLocation: userLocation || '',
 
-  // Job
+  // Create and Edit Job
   isEditing: false,
   editJobId: '',
   position: '',
@@ -33,6 +33,12 @@ export const initialState = {
   jobLocation: userLocation || '',
   statusOptions: ['interview', 'declined', 'pending'],
   status: 'pending',
+
+  // Get All Jobs
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 0,
+  page: 0,
 };
 
 export const AppContext = React.createContext();
@@ -164,17 +170,77 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: actionTypes.CLEAR_VALUES });
   };
 
+  const createJob = async () => {
+    dispatch({ type: actionTypes.CREATE_JOB_BEGIN });
+    try {
+      const { position, company, jobLocation, jobType, status } = state;
+      await authFetch.post('/jobs', {
+        position,
+        company,
+        jobLocation,
+        jobType,
+        status,
+      });
+
+      dispatch({ type: actionTypes.CREATE_JOB_SUCCESS });
+      clearValues();
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: actionTypes.CREATE_JOB_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+    clearAlert();
+  };
+
+  const getAllJobs = async () => {
+    let url = `/jobs`;
+    dispatch({ type: actionTypes.GET_JOBS_BEGIN });
+    try {
+      const { data } = await authFetch(url);
+      const { numOfPages, totalJobs, jobs } = data || {};
+      dispatch({
+        type: actionTypes.GET_JOBS_SUCCESS,
+        payload: { numOfPages, totalJobs, jobs },
+      });
+    } catch (error) {
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  const setEditJob = (id) => {
+    console.log(`set edit job ${id}`);
+  };
+
+  const deleteJob = (id) => {
+    console.log(`delete job ${id}`);
+  };
+
   return (
     <AppContext.Provider
       value={{
         ...state,
         displayAlert,
-        setupUser,
         toggleSideBar,
+
+        // User Login and Register
+        setupUser,
+
+        // User
         logoutUser,
         updateUser,
+
+        // Create and Edit Job Form value
         handleChange,
         clearValues,
+
+        // Jobs
+        createJob,
+        getAllJobs,
+        setEditJob,
+        deleteJob,
       }}
     >
       {children}

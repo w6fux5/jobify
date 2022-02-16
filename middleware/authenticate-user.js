@@ -14,7 +14,6 @@ const authenticateUser = (req, res, next) => {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     const { userID } = payload;
     req.user = { userID };
-    console.log(req.user);
   } catch (error) {
     throw new UnauthenticatedError('Invalid Token');
   }

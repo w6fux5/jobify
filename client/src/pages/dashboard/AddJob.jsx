@@ -25,11 +25,18 @@ const AddJob = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+
     if (!position || !company || !jobLocation) {
       displayAlert();
       return;
     }
-    console.log('submit');
+
+    if (isEditing) {
+      // TODO edit job logic
+      return;
+    }
+
+    createJob();
   };
 
   const jobInputHandler = ({ target }) => {
@@ -91,9 +98,9 @@ const AddJob = () => {
               type="submit"
               className="btn btn-block submit-btn"
               // onClick={handleSubmit}
-              // disabled={isLoading}
+              disabled={isLoading}
             >
-              submit
+              {isLoading ? 'Loading...' : 'submit'}
             </button>
             <button
               type="button"
