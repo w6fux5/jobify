@@ -126,9 +126,10 @@ export const AppProvider = ({ children }) => {
 
       addUserToLocalStorage({ user, token, location });
     } catch (error) {
+      console.log(error.response.data.message);
       dispatch({
         type: actionTypes.SETUP_USER_ERROR,
-        payload: error.response.data.message,
+        payload: error.response.data.message || error.response.data,
       });
     }
 
@@ -188,7 +189,7 @@ export const AppProvider = ({ children }) => {
       if (error.response.status === 401) return;
       dispatch({
         type: actionTypes.CREATE_JOB_ERROR,
-        payload: error.response.data.message,
+        payload: error.response.data,
       });
     }
     clearAlert();
@@ -211,11 +212,42 @@ export const AppProvider = ({ children }) => {
   };
 
   const setEditJob = (id) => {
-    console.log(`set edit job ${id}`);
+    dispatch({ type: actionTypes.SET_EDIT_JOB, payload: id });
   };
 
-  const deleteJob = (id) => {
-    console.log(`delete job ${id}`);
+  const editJob = async () => {
+    dispatch({ type: actionTypes.EDIT_JOB_BEGIN });
+    try {
+      const { position, company, jobLocation, jobType, status } = state;
+      await authFetch.patch(`/jobs/${state.editJobId}`, {
+        position,
+        company,
+        jobLocation,
+        jobType,
+        status,
+      });
+
+      dispatch({ type: actionTypes.EDIT_JOB_SUCCESS });
+      dispatch({ type: actionTypes.CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: actionTypes.EDIT_JOB_ERROR,
+        payload: error.response.data,
+      });
+    }
+  };
+
+  const deleteJob = async (jobID) => {
+    dispatch({ type: actionTypes.DELETE_JOB_BEGIN });
+
+    try {
+      await authFetch.delete(`/jobs/${jobID}`);
+      getAllJobs();
+    } catch (error) {
+      console.log(error.response);
+      logoutUser();
+    }
   };
 
   return (
@@ -241,6 +273,7 @@ export const AppProvider = ({ children }) => {
         getAllJobs,
         setEditJob,
         deleteJob,
+        editJob,
       }}
     >
       {children}

@@ -20,7 +20,7 @@ const AddJob = () => {
     handleChange,
     clearValues,
     createJob,
-    editJobId,
+    editJob,
   } = useAppContext();
 
   const onSubmitHandler = (e) => {
@@ -32,7 +32,7 @@ const AddJob = () => {
     }
 
     if (isEditing) {
-      // TODO edit job logic
+      editJob();
       return;
     }
 

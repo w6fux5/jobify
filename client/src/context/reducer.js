@@ -151,6 +151,7 @@ const reducer = (state, action) => {
         alertText: action.payload,
       };
 
+    // Get All Jobs
     case actionTypes.GET_JOBS_BEGIN:
       return {
         ...state,
@@ -168,6 +169,60 @@ const reducer = (state, action) => {
         numOfPages,
         totalJobs,
         jobs,
+      };
+
+    // Set Edit Job
+    case actionTypes.SET_EDIT_JOB:
+      const job = state.jobs.find((el) => el._id === action.payload);
+      const {
+        company,
+        jobLocation,
+        jobType,
+        _id: editJobId,
+        position,
+        status,
+      } = job || {};
+      return {
+        ...state,
+        isEditing: true,
+        editJobId,
+        company,
+        jobLocation,
+        jobType,
+        position,
+        status,
+      };
+
+    // Delete Job
+    case actionTypes.DELETE_JOB_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    // Edit JOb
+    case actionTypes.EDIT_JOB_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case actionTypes.EDIT_JOB_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: 'success',
+        alertText: 'Job Updated',
+      };
+
+    case actionTypes.EDIT_JOB_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: 'danger',
+        alertText: action.payload,
       };
 
     default:
