@@ -39,6 +39,10 @@ export const initialState = {
   totalJobs: 0,
   numOfPages: 0,
   page: 0,
+
+  // Stats
+  stats: {},
+  monthlyApplications: [],
 };
 
 export const AppContext = React.createContext();
@@ -250,6 +254,26 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const showStats = async () => {
+    dispatch({ type: actionTypes.SHOW_STATS_BEGIN });
+
+    try {
+      const { data } = await authFetch('/jobs/stats');
+      dispatch({
+        type: actionTypes.SHOW_STATS_SUCCESS,
+        payload: {
+          stats: data.stats,
+          monthlyApplications: data.monthlyApplications,
+        },
+      });
+    } catch (error) {
+      console.log(error.response);
+      logoutUser();
+    }
+
+    clearAlert();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -274,6 +298,9 @@ export const AppProvider = ({ children }) => {
         setEditJob,
         deleteJob,
         editJob,
+
+        // Stats
+        showStats,
       }}
     >
       {children}

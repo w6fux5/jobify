@@ -41,6 +41,10 @@ const actionTypes = {
 
   // SideBar
   TOGGLE_SIDEBAR: 'TOGGLE_SIDEBAR',
+
+  // Stats
+  SHOW_STATS_BEGIN: 'SHOW_STATS_BEGIN',
+  SHOW_STATS_SUCCESS: 'SHOW_STATS_SUCCESS',
 };
 
 export default actionTypes;

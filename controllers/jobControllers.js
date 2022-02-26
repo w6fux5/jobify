@@ -89,5 +89,5 @@ export const showStatus = async (req, res) => {
     pending: statsFromServer.pending || 0,
   };
 
-  res.status(StatusCodes.OK).json({ stats });
+  res.status(StatusCodes.OK).json({ stats, monthlyApplications: [] });
 };

@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.route('/status').get(showStatus);
+router.route('/stats').get(showStatus);
 router.route('/').post(createJob).get(getAllJobs);
 router.route('/:id').delete(deleteJob).patch(updateJob);
 
