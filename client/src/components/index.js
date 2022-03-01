@@ -19,4 +19,6 @@ export { default as Job } from './jobs/Job';
 export { default as StatsContainer } from './stats/StatsContainer';
 
 // Chat
-export { default as ChatContainer } from './chat/ChatContainer';
+export { default as ChartContainer } from './chart/ChartContainer';
+export { default as BarChartComponent } from './chart/BarChartComponent';
+export { default as AreaChartComponent } from './chart/AreaChartComponent';
