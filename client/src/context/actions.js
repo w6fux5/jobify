@@ -45,6 +45,8 @@ const actionTypes = {
   // Stats
   SHOW_STATS_BEGIN: 'SHOW_STATS_BEGIN',
   SHOW_STATS_SUCCESS: 'SHOW_STATS_SUCCESS',
+
+  CLEAR_FILTERS: 'CLEAR_FILTERS',
 };
 
 export default actionTypes;

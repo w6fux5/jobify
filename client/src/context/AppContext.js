@@ -43,6 +43,13 @@ export const initialState = {
   // Stats
   stats: {},
   monthlyApplications: [],
+
+  // Search
+  search: '',
+  searchStatus: 'all',
+  searchType: 'all',
+  sort: 'latest',
+  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 };
 
 export const AppContext = React.createContext();
@@ -200,7 +207,14 @@ export const AppProvider = ({ children }) => {
   };
 
   const getAllJobs = async () => {
-    let url = `/jobs`;
+    const { search, searchStatus, searchType, sort } = state;
+
+    let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+
+    if (search) {
+      url = url + `&search=${search}`;
+    }
+
     dispatch({ type: actionTypes.GET_JOBS_BEGIN });
     try {
       const { data } = await authFetch(url);
@@ -274,6 +288,11 @@ export const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const clearFilter = () => {
+    console.log('clear filter');
+    dispatch({ type: actionTypes.CLEAR_FILTERS });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -301,6 +320,8 @@ export const AppProvider = ({ children }) => {
 
         // Stats
         showStats,
+
+        clearFilter,
       }}
     >
       {children}
