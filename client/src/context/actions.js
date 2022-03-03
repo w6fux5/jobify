@@ -47,6 +47,8 @@ const actionTypes = {
   SHOW_STATS_SUCCESS: 'SHOW_STATS_SUCCESS',
 
   CLEAR_FILTERS: 'CLEAR_FILTERS',
+
+  CHANGE_PAGE: 'CHANGE_PAGE',
 };
 
 export default actionTypes;

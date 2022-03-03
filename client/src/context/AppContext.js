@@ -38,7 +38,7 @@ export const initialState = {
   jobs: [],
   totalJobs: 0,
   numOfPages: 0,
-  page: 0,
+  page: 1,
 
   // Stats
   stats: {},
@@ -207,9 +207,9 @@ export const AppProvider = ({ children }) => {
   };
 
   const getAllJobs = async () => {
-    const { search, searchStatus, searchType, sort } = state;
+    const { page, search, searchStatus, searchType, sort } = state;
 
-    let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+    let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
 
     if (search) {
       url = url + `&search=${search}`;
@@ -293,6 +293,13 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: actionTypes.CLEAR_FILTERS });
   };
 
+  const changePage = (page) => {
+    dispatch({
+      type: actionTypes.CHANGE_PAGE,
+      payload: { page },
+    });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -322,6 +329,8 @@ export const AppProvider = ({ children }) => {
         showStats,
 
         clearFilter,
+
+        changePage,
       }}
     >
       {children}

@@ -104,6 +104,7 @@ const reducer = (state, action) => {
     case actionTypes.HANDLE_CHANGE:
       return {
         ...state,
+        page: 1,
         [action.payload.name]: action.payload.value,
       };
 
@@ -248,6 +249,12 @@ const reducer = (state, action) => {
         searchStatus: 'all',
         searchType: 'all',
         sort: 'latest',
+      };
+
+    case actionTypes.CHANGE_PAGE:
+      return {
+        ...state,
+        page: action.payload.page,
       };
 
     default:
